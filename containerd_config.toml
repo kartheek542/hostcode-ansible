@@ -4,7 +4,7 @@ oom_score = 0
 plugin_dir = ""
 required_plugins = []
 root = "/data/containerd"
-state = "/data/containerd"
+state = "/run/containerd"
 temp = ""
 version = 2
 
