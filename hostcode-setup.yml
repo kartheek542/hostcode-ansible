@@ -143,10 +143,6 @@
     - name: Initialize cluster
       command: kubeadm init --pod-network-cidr=192.168.0.1/16 --apiserver-advertise-address=10.0.1.10
 
-    - name: See Join command
-      debug:
-        msg: "{{ kube_join_command.stdout }}"
-
     - name: Echo HOME
       shell: echo $HOME
       register: home_path
