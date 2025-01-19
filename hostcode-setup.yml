@@ -144,8 +144,17 @@
       command: kubeadm init --pod-network-cidr=192.168.0.1/16 --apiserver-advertise-address=10.0.1.10
       register: kube_join_command
 
+    - name: See Join command
+      debug:
+        msg: "{{ kube_join_command.stdout }}"
+
     - name: Echo HOME
       shell: echo $HOME
+      register: home_path
+
+    - name: See $HOME path
+      debug:
+        msg: "{{ home_path.stdout }}"
 
     - name: Create .kube dir
       shell: mkdir $HOME/.kube
