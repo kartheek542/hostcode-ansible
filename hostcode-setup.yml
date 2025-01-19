@@ -43,19 +43,19 @@
     - name: Add the kernel modules to containerd config
       lineinfile:
         path: /etc/modules-load.d/containerd.conf
-        line:
-          - "overlay"
-          - "br_netfilter"
+        line: |
+          overlay
+          br_netfilter
         create: yes
         state: present
 
     - name: Make sysctl changes
       lineinfile:
         path: /etc/sysctl.d/99-kubernetes.conf
-        line:
-          - "net.bridge.bridge-nf-call-iptables = 1"
-          - "net.bridge.bridge-nf-call-ip6tables = 1"
-          - "net.ipv4.ip_forward = 1"
+        line: |
+          net.bridge.bridge-nf-call-iptables = 1
+          net.bridge.bridge-nf-call-ip6tables = 1
+          net.ipv4.ip_forward = 1
         create: yes
         state: present
 
