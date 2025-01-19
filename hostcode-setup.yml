@@ -142,7 +142,6 @@
   tasks:
     - name: Initialize cluster
       command: kubeadm init --pod-network-cidr=192.168.0.1/16 --apiserver-advertise-address=10.0.1.10
-      register: kube_join_command
 
     - name: See Join command
       debug:
@@ -167,6 +166,14 @@
 
     - name: Initialzie kubernetes network
       command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+    - name: Generate cluster join command
+      command: kubeadm token create --print-join-command
+      register: kube_join_command
+
+    - name: See Join command
+      debug:
+        msg: "{{ kube_join_command.stdout }}"
 
 - hosts: kubernetes_slaves
   become: true
