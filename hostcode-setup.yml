@@ -49,6 +49,19 @@
         create: yes
         state: present
 
+    - name: Make sysctl changes
+      lineinfile:
+        path: /etc/sysctl.d/99-kubernetes.conf
+        line:
+          - "net.bridge.bridge-nf-call-iptables = 1"
+          - "net.bridge.bridge-nf-call-ip6tables = 1"
+          - "net.ipv4.ip_forward = 1"
+        create: yes
+        state: present
+
+    - name: Create containerd config file
+      shell: sysctl --system
+
     - name: Load overlay module
       shell: modprobe overlay
       changed_when: false
