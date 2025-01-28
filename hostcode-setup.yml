@@ -177,3 +177,9 @@
     - name: Join cluster
       command: "{{ hostvars['kube_master']['kube_join_command']['stdout_lines'][0] }}"
       when: "'kubeadm join' in hostvars['kube_master']['kube_join_command']['stdout']"
+
+- hosts: kube_master
+  become: true
+  tasks:
+    - name: Join cluster
+      command: kubectl rollout restart deployment coredns --namespace kube-system
