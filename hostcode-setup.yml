@@ -183,3 +183,29 @@
   tasks:
     - name: Join cluster
       command: kubectl rollout restart deployment coredns --namespace kube-system
+
+- hosts: kube_master
+  become: true
+  tasks:
+    - name: Create new namespace
+      command: kubectl create namespace hostcode
+
+- hosts: kube_master
+  become: true
+  tasks:
+    - name: Create secrets
+      command: kubectl create secret generic my-aws-credentials --from-literal=aws_access_key_id={{ lookup('env', 'AWS_ACCESS_KEY_ID') }} --from-literal=aws_secret_access_key={{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }} -n hostcode
+
+- hosts: kube_master
+  become: true
+  tasks:
+    - name: Copy worker-pod yaml
+      copy:
+        src: ./kubernetes/worker-pod.yml
+        dest: /data/worker-pod.yml
+
+# - hosts: kube_master
+#   become: true
+#   tasks:
+#     - name: Create secrets
+#       command: kubectl apply -f /data/worker-pod.yml

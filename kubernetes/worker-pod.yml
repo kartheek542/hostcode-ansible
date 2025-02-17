@@ -1,0 +1,56 @@
+# Worker service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: worker-account
+  namespace: hostcode
+
+---
+# Role for cluster
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hostcode-cluster-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+
+---
+# Cluster role binding to service account
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: hostcode-cluster-role-binding
+subjects:
+  - kind: ServiceAccount
+    name: worker-account
+    namespace: hostcode
+roleRef:
+  kind: ClusterRole
+  name: hostcode-cluster-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Worker pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: job-worker
+  namesapce: hostcode
+spec:
+  serviceAccountName: worker-account
+  containers:
+    - name: job-worker
+      image: kartheek542/hostcode:job-worker
+      env:
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: my-aws-credentials
+              key: aws_access_key_id 
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: my-aws-credentials
+              key: aws_secret_access_key
