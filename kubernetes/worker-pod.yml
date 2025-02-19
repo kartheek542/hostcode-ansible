@@ -43,6 +43,7 @@ spec:
   containers:
     - name: job-worker
       image: kartheek542/hostcode:job-worker
+      imagePullPolicy: Always
       env:
         - name: AWS_ACCESS_KEY_ID
           valueFrom:
