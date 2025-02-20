@@ -14,7 +14,7 @@ metadata:
 rules:
   - apiGroups: ["*"]
     resources: ["*"]
-    verbs: ["get", "list", "watch", "create", "update", "delete"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "patch"]
 
 ---
 # Cluster role binding to service account
