@@ -181,8 +181,11 @@
 - hosts: kube_master
   become: true
   tasks:
-    - name: Join cluster
+    - name: Restarting coredns
       command: kubectl rollout restart deployment coredns --namespace kube-system
+
+    - name: Wait for coredns
+      command: kubectl wait --for=condition=available --timeout=120s -n kube-system deployment/coredns
 
     - name: Create new namespace
       command: kubectl create namespace hostcode
