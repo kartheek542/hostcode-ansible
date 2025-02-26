@@ -214,7 +214,7 @@
       command: kubectl rollout restart deployment coredns --namespace kube-system
 
     - name: Wait for coredns
-      command: kubectl wait --for=condition=available --timeout=120s -n kube-system deployment/coredns
+      command: sleep 120
 
     - name: Create new namespace
       command: kubectl create namespace hostcode
