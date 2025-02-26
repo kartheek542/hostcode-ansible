@@ -94,11 +94,25 @@
     - name: pull hostcode ui image
       command: ctr image pull docker.io/kartheek542/hostcode:ui-1.0
 
-    - name: Run the backend container
-      command: ctr run --net-host docker.io/kartheek542/hostcode:backend-1.0 hostcode-backend
+    - name: create the backend container
+      command: ctr container create --net-host docker.io/kartheek542/hostcode:backend-1.0 hostcode-backend
 
-    - name: Run the ui container
-      command: ctr run --net-host docker.io/kartheek542/hostcode:ui-1.0 hostcode-ui
+    - name: create the ui container
+      command: ctr container create --net-host docker.io/kartheek542/hostcode:ui-1.0 hostcode-ui
+
+    - name: start the backend container
+      command: ctr task start -d hostcode-backend
+
+    - name: start the ui container
+      command: ctr task start -d hostcode-ui
+
+    - name: list the tasks
+      command: ctr task ls
+      register: ctr_task_list
+
+    - name: debug ctr tasks
+      ansible.builtin.debug:
+        msg: "{{ ctr_task_list.stdout }}"
 
 - hosts: kube_master, kubernetes_slaves
   become: true
