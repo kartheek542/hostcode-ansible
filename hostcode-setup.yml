@@ -85,6 +85,21 @@
         name: containerd
         state: restarted
 
+- hosts: nodejs_servers
+  become: true
+  tasks:
+    - name: pull hostcode backend image
+      command: ctr image pull docker.io/kartheek542/hostcode:backend-1.0
+
+    - name: pull hostcode ui image
+      command: ctr image pull docker.io/kartheek542/hostcode:ui-1.0
+
+    - name: Run the backend container
+      command: ctr run --net-host docker.io/kartheek542/hostcode:backend-1.0 hostcode-backend
+
+    - name: Run the ui container
+      command: ctr run --net-host docker.io/kartheek542/hostcode:ui-1.0 hostcode-ui
+
 - hosts: kube_master, kubernetes_slaves
   become: true
   tasks:
@@ -198,5 +213,5 @@
         src: ./kubernetes/worker-pod.yml
         dest: /data/worker-pod.yml
 
-#     - name: Create secrets
-#       command: kubectl apply -f /data/worker-pod.yml
+    - name: Create secrets
+      command: kubectl apply -f /data/worker-pod.yml
