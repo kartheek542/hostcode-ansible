@@ -210,6 +210,9 @@
 - hosts: kube_master
   become: true
   tasks:
+    - name: preset sleep
+      command: sleep 60
+
     - name: Restarting coredns
       command: kubectl rollout restart deployment coredns --namespace kube-system
 
