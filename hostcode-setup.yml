@@ -210,7 +210,7 @@
 - hosts: kube_master
   become: true
   tasks:
-    - name: preset sleep
+    - name: preset sleep for kubernetes
       command: sleep 60
 
     - name: Restarting coredns
