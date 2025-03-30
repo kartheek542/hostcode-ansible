@@ -95,8 +95,7 @@
       command: ctr image pull docker.io/kartheek542/hostcode:ui-1.0
 
     - name: create the backend container
-      command: ctr container create --net-host docker.io/kartheek542/hostcode:backend-1.0 hostcode-backend
-
+      command: ctr container create --net-host --env "HOSTCODE_DB_HOST={{ lookup('env', 'HOSTCODE_DB_HOST') }}" --env "HOSTCODE_DB_DATABASE={{ lookup('env', 'HOSTCODE_DB_DATABASE') }}" --env "HOSTCODE_DB_USER={{ lookup('env', 'HOSTCODE_DB_USER') }}" --env "HOSTCODE_DB_PASSWORD={{ lookup('env', 'HOSTCODE_DB_PASSWORD') }}" --env "HOSTCODE_DB_PORT={{ lookup('env', 'HOSTCODE_DB_PORT') }}" --env "JWT_SECRET={{ lookup('env', 'JWT_SECRET') }}" --env "AWS_ACCESS_KEY_ID={{ lookup('env', 'AWS_ACCESS_KEY_ID') }}" --env "AWS_SECRET_ACCESS_KEY={{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}" --env "AWS_REGION={{ lookup('env', 'AWS_REGION') }}" docker.io/kartheek542/hostcode:backend-1.0 hostcode-backend
     - name: create the ui container
       command: ctr container create --net-host docker.io/kartheek542/hostcode:ui-1.0 hostcode-ui
 
